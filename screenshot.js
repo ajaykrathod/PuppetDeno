@@ -1,8 +1,7 @@
 import puppeteer from "https://deno.land/x/puppeteer@14.1.1/mod.ts";
 import {
     Application,
-    Router,
-    send
+    Router
   } from "https://deno.land/x/oak@v10.6.0/mod.ts";
   import {
     oakAdapter,
@@ -44,12 +43,42 @@ router.all('/screenshot',async(ctx) => {
     
 })
 
+
+router.all('/pdf',async(ctx) => {
+  if(ctx.request.method == "POST"){
+    const body = ctx.request.body({type: 'form-data'})
+    const value = await body.value.read();
+    const browser = await puppeteer.launch()
+    const page = await browser.newPage();
+    await page.goto(value.fields.url,{
+      waitUntil: 'networkidle2',
+    });
+    const pdf = await page.pdf({path:"example.pdf",format:"A4"});
+    
+    await browser.close();
+    const headers = new Headers()
+    // const downloadURL = Deno.cwd() + "public/example.png"
+    headers.append('Content-Length', String(pdf.byteLength))
+    headers.append('Content-Type','application/pdf')
+    headers.append('Content-Disposition', 'attachment; filename=quote.pdf')
+    ctx.response.body = pdf
+    ctx.response.headers = headers
+    ctx.response.status = 200
+
+  }
+  if(ctx.request.method == "GET"){
+    ctx.render('public/pdf.html')
+
+  }
+  
+})
+
 app.use(router.routes());
 app.use(router.allowedMethods())
 
 
 app.use(async (ctx,next) => {
-  await send(ctx, ctx.request.url.pathname,{
+  await ctx.send(ctx, ctx.request.url.pathname,{
    root: `${Deno.cwd()}/public`
     })
   next()
