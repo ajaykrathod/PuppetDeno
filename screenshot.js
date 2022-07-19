@@ -78,10 +78,9 @@ app.use(router.allowedMethods())
 
 
 app.use(async (ctx,next) => {
-  await ctx.send(ctx, ctx.request.url.pathname,{
+  await ctx.send({
    root: `${Deno.cwd()}/public`
     })
-  next()
  });
 
 app.addEventListener("listen",() => {
