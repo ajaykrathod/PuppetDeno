@@ -20,7 +20,7 @@ app.use(viewEngine(oakAdapter,denjuckEngine))
 
 
 router.get('/', (ctx) => {
-    ctx.render('public/index.html',{data:{name:"Hello Ajay"}})
+    ctx.render('index.html',{data:{name:"Hello Ajay"}})
     
 })
 
@@ -38,7 +38,7 @@ router.all('/screenshot',async(ctx) => {
 
     const imageURL = URL.createObjectURL(blob)
     // const downloadURL = Deno.cwd() + "public/example.png"
-    ctx.render('public/screenshot.html',{data:{src:imageURL}})
+    ctx.render('screenshot.html',{data:{src:imageURL}})
     ctx.response.status = 200
     
 })
@@ -67,7 +67,7 @@ router.all('/pdf',async(ctx) => {
 
   }
   if(ctx.request.method == "GET"){
-    ctx.render('public/pdf.html')
+    ctx.render('pdf.html')
 
   }
   
@@ -77,12 +77,11 @@ app.use(router.routes());
 app.use(router.allowedMethods())
 
 
-app.use(async (context) => {
-  await context.send({
-      root: `${Deno.cwd()}/public`,
-      index: 'index.html',
-  })
-});
+// app.use(async (context) => {
+//   await context.send({
+//       root: `${Deno.cwd()}/public`,
+//   })
+// });
 
 app.addEventListener("listen",() => {
     console.log("Listening");
