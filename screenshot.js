@@ -77,11 +77,12 @@ app.use(router.routes());
 app.use(router.allowedMethods())
 
 
-app.use(async (ctx,next) => {
-  await ctx.send({
-   root: `${Deno.cwd()}/public`
-    })
- });
+app.use(async (context) => {
+  await context.send({
+      root: `${Deno.cwd()}/public`,
+      index: 'index.html',
+  })
+});
 
 app.addEventListener("listen",() => {
     console.log("Listening");
