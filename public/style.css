@@ -1,0 +1,42 @@
+body {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+}
+
+form {
+    display: grid;
+    place-items: center;
+    grid-template-rows: 2fr;
+    row-gap: 2vh;
+}
+
+input {
+    width: 30vw;
+    outline: none;
+    border: none;
+    line-height: 4vh;
+    font-size: large;
+    padding: 3px 10px;
+    border: 1px solid gray;
+    border-radius: 5px 0 5px 0;
+}
+
+input:focus, input:hover {
+    border: none;
+    outline: 2px solid skyblue;
+    transition: all 1s ease-in-out;
+}
+
+button {
+    background: none;
+    border-radius: 5px 0 5px 0;
+    font-size: large;
+    padding: 3px 10px;
+    border: 1px solid gray;
+}
+
+button:hover {
+    border: 2px solid skyblue;
+    transition: all 1s ease-in-out;
+}
