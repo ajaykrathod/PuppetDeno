@@ -8,8 +8,6 @@ import {
     viewEngine,
     denjuckEngine,
   } from "https://deno.land/x/view_engine@v10.5.1/mod.ts";
-// import * as mod from "https://deno.land/std@0.148.0/node/fs.ts";
-import { createWriteStream } from "https://deno.land/std@0.148.0/node/fs.ts";
 
 
 const router = new Router()
@@ -18,7 +16,6 @@ const app = new Application()
 
 
 
-app.use(viewEngine(oakAdapter,denjuckEngine))
 
 
 router.get('/', (ctx) => {
@@ -39,18 +36,18 @@ router.all('/screenshot',async(ctx) => {
     
     await browser.close();
     const blob = new Blob(screenshot,{type: 'image/png'});
-
+    
     const imageURL = URL.createObjectURL(blob)
     // const downloadURL = Deno.cwd() + "public/example.png"
     ctx.render('public/screenshot.html',{data:{src:"/example.png"}})
     ctx.response.status = 200
     
-})
-
-
-router.all('/pdf',async(ctx) => {
-  if(ctx.request.method == "POST"){
-    const body = ctx.request.body({type: 'form-data'})
+  })
+  
+  
+  router.all('/pdf',async(ctx) => {
+    if(ctx.request.method == "POST"){
+      const body = ctx.request.body({type: 'form-data'})
     const value = await body.value.read();
     const browser = await puppeteer.launch({product:"chrome"})
     const page = await browser.newPage();
@@ -73,13 +70,14 @@ router.all('/pdf',async(ctx) => {
     // headers.append('Content-Disposition', 'attachment; filename=quote.pdf')
     ctx.render('public/pdf.html',{data:{src:"/example.pdf"}})
     ctx.response.status = 200
-
+    
   }
 })
 
 app.use(router.routes());
 app.use(router.allowedMethods())
 
+app.use(viewEngine(oakAdapter,denjuckEngine))
 
 app.use(async (context) => {
   await context.send({
