@@ -2,7 +2,7 @@ import puppeteer from "https://deno.land/x/puppeteer@9.0.2/mod.ts";
 import {
     Application,
     Router
-  } from "https://deno.land/x/oak@v10.6.0/mod.ts";
+  } from "https://deno.land/x/oak/mod.ts";
   import {
     oakAdapter,
     viewEngine,
