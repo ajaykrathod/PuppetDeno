@@ -12,7 +12,7 @@ import {
 
 const router = new Router()
 
-const app = new Application()
+
 
 
 
@@ -21,7 +21,7 @@ const app = new Application()
 router.get('/', (ctx) => {
     ctx.render('public/index.html',{data:{name:"Hello Ajay"}})
     
-})
+  })
 
 
 router.all('/screenshot',async(ctx) => {
@@ -74,10 +74,11 @@ router.all('/screenshot',async(ctx) => {
   }
 })
 
+const app = new Application()
+app.use(viewEngine(oakAdapter,denjuckEngine))
 app.use(router.routes());
 app.use(router.allowedMethods())
 
-app.use(viewEngine(oakAdapter,denjuckEngine))
 
 app.use(async (context) => {
   await context.send({
